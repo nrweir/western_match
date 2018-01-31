@@ -25,14 +25,14 @@ conv_depth = 64
 conv_shape = (3, 3)
 pool_shape = (3, 3)
 stride = None
-conv_regs = np.log10(np.random.rand(25)*-4 - 1)
-act_regs = np.log10(np.random.rand(25)*-6 - 1)
+conv_regs = np.power(10, np.random.rand(25)*-4 - 1)
+act_regs = np.power(10, np.random.rand(25)*-6 - 1)
 optimizer = "SGD"
 lr = 0.000001
 # END MODEL VARIABLES #
 
 # TRAINING VARIABLES #
-epochs = 100
+epochs = 50
 cb_path = '/n/denic_lab/Users/nweir/python_packages/western_match/outputs/csae_act_conv_reg_opt_'
 es = False
 es_patience = 10
@@ -68,7 +68,6 @@ for i in range(0, 25):
                             patch_shape=input_shape[0:2], h_resize=h_resize,
                             v_resize=v_resize, v_flip=v_flip, h_flip=h_flip,
                             rotate=rotate, contrast=contrast)
-
     fit_model = current_CSAE.fit_generator(
         generator=training_data,
         steps_per_epoch=int(len(train['image'])/batch_size), epochs=epochs,

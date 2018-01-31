@@ -110,8 +110,8 @@ def get_standard_callbacks(path, es=False, es_patience=10, sbo=True):
 
     Returns:
     --------
-    A list containing a `ModelCheckpoint` callback, and an `EarlyStopping`
-    callback if `es`==True.
+    A list containing a `ModelCheckpoint` callback, a `TerminateOnNaN`
+    callback, and an `EarlyStopping` callback if `es`==True.
 
     """
     model_checkpoint = ModelCheckpoint(
