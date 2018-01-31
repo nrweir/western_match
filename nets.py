@@ -115,10 +115,9 @@ def get_standard_callbacks(path, es=False, es_patience=10, sbo=True):
 
     """
     model_checkpoint = ModelCheckpoint(
-        filepath=path+".weights.{epoch:02d}-{val_loss:.3f}.hdf5",
-        monitor='val_loss', save_best_only=sbo)
+        filepath=path+".weights.{epoch:02d}-{val_loss:.3f}.hdf5", save_best_only=sbo)
 
-    early_stopping = EarlyStopping(monitor='val_loss', patience=es_patience)
+    early_stopping = EarlyStopping(patience=es_patience)
     checkpoints = [model_checkpoint, TerminateOnNaN()]
     if es:
         checkpoints.append(early_stopping)
