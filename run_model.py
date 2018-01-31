@@ -1,7 +1,7 @@
 """Run models implemented in other scripts."""
 
-from .nets import CSAE, get_standard_callbacks
-from .df_generator import df_generator
+from nets import CSAE, get_standard_callbacks
+from df_generator import df_generator
 from sklearn import model_selection
 import os
 import pickle
@@ -32,7 +32,7 @@ lr = 0.000001
 # END MODEL VARIABLES #
 
 # TRAINING VARIABLES #
-epochs = 50
+epochs = 100
 cb_path = '/n/denic_lab/Users/nweir/python_packages/western_match/outputs/csae_act_conv_reg_opt_'
 es = False
 es_patience = 10
@@ -68,6 +68,7 @@ for i in range(0, 25):
                             patch_shape=input_shape[0:2], h_resize=h_resize,
                             v_resize=v_resize, v_flip=v_flip, h_flip=h_flip,
                             rotate=rotate, contrast=contrast)
+
     fit_model = current_CSAE.fit_generator(
         generator=training_data,
         steps_per_epoch=int(len(train['image'])/batch_size), epochs=epochs,
