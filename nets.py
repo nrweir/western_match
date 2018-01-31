@@ -5,7 +5,7 @@ from keras.layers import ActivityRegularization, Conv2DTranspose
 from keras.regularizers import l2
 from keras.models import Model
 from keras.optimizers import SGD, Adam
-from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping, TerminateOnNaN
 
 
 def CSAE(input_shape=(150, 150, 1), conv_depth=32, conv_shape=(3, 3),
@@ -119,7 +119,7 @@ def get_standard_callbacks(path, es=False, es_patience=10, sbo=True):
         monitor='val_loss', save_best_only=sbo)
 
     early_stopping = EarlyStopping(monitor='val_loss', patience=es_patience)
-    checkpoints = [model_checkpoint]
+    checkpoints = [model_checkpoint, TerminateOnNaN()]
     if es:
         checkpoints.append(early_stopping)
 
