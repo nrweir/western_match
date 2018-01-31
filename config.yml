@@ -1,0 +1,32 @@
+---
+gen_vars:
+    batch_size: 32
+    input_shape: (150, 150, 1)
+    h_resize: None
+    v_resize: None
+    v_flip: False
+    h_flip: False
+    rotate: False
+    contrast: None
+# END GEN VARIABLES #
+
+# MODEL VARIABLES #
+model_vars:
+    conv_depth: 64
+    conv_shape: (3, 3)
+    pool_shape: (3, 3)
+    stride: None
+    conv_reg: 0.001
+    act_regs: [0, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
+    optimizer: "SGD"
+    lr: 0.000001
+# END MODEL VARIABLES #
+
+# TRAINING VARIABLES #
+epochs: 5
+cb_path: callbacks/csae_cv64
+es: False
+es_patience: 10
+sbo: True
+
+...
