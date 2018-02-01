@@ -219,37 +219,40 @@ def SCSAE(input_shape=(150, 150, 1), conv_depth=256, conv_shape=(3, 3),
     output_1 = dec_conv(dec_unpooled)  # output
 
                             ## AUTOENCODER 2 ##
-    enc_conv_layer = Conv2D(conv_depth/2, conv_shape, use_bias=True,
+    enc_conv_layer_2 = Conv2D(conv_depth/2, conv_shape, use_bias=True,
                             activation='relu', padding='same',
-                            kernel_regularizer=l2(conv_reg))(output_1)
-    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
-    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
-    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
-    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                            kernel_regularizer=l2(conv_reg))
+    enc_conv_2 = enc_conv_layer_2(output_1)
+    encoded_2 = MaxPooling2D(pool_shape, strides=stride)(enc_conv_2)  # enc output
+    enc_reg_2 = ActivityRegularization(l2=act_reg)(encoded_2)  # sparsifying reg
+    dec_unpooled_2 = UpSampling2D(size=pool_shape)(enc_reg_2)  # de-pooling
+    dec_conv_2 = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
                                activation='relu', padding='same')
-    output_2 = dec_conv(dec_unpooled)  # output
+    output_2 = dec_conv_2(dec_unpooled_2)  # output
 
                             ## AUTOENCODER 3 ##
-    enc_conv_layer = Conv2D(conv_depth/4, conv_shape, use_bias=True,
+    enc_conv_layer_3 = Conv2D(conv_depth/4, conv_shape, use_bias=True,
                             activation='relu', padding='same',
-                            kernel_regularizer=l2(conv_reg))(output_2)
-    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
-    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
-    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
-    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                            kernel_regularizer=l2(conv_reg))
+    enc_conv_3 = enc_conv_layer_3(output_2)
+    encoded_3 = MaxPooling2D(pool_shape, strides=stride)(enc_conv_3)  # enc output
+    enc_reg_3 = ActivityRegularization(l2=act_reg)(encoded_3)  # sparsifying reg
+    dec_unpooled_3 = UpSampling2D(size=pool_shape)(enc_reg_3)  # de-pooling
+    dec_conv_3 = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
                                activation='relu', padding='same')
-    output_3 = dec_conv(dec_unpooled)  # output
+    output_3 = dec_conv_3(dec_unpooled_3)  # output
 
                             ## AUTOENCODER 4 ##
-    enc_conv_layer = Conv2D(conv_depth/8, conv_shape, use_bias=True,
+    enc_conv_layer_4 = Conv2D(conv_depth/8, conv_shape, use_bias=True,
                             activation='relu', padding='same',
-                            kernel_regularizer=l2(conv_reg))(output_3)
-    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
-    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
-    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
-    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                            kernel_regularizer=l2(conv_reg))
+    enc_conv_4 = enc_conv_layer_4(output_3)
+    encoded_4 = MaxPooling2D(pool_shape, strides=stride)(enc_conv_4)  # enc output
+    enc_reg_4 = ActivityRegularization(l2=act_reg)(encoded_4)  # sparsifying reg
+    dec_unpooled_4 = UpSampling2D(size=pool_shape)(enc_reg_4)  # de-pooling
+    dec_conv_4 = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
                                activation='relu', padding='same')
-    output_4 = dec_conv(dec_unpooled)  # output
+    output_4 = dec_conv_4(dec_unpooled_4)  # output
 
     model = Model(input=input_img, outputs=output_4)
     if optimizer == 'Adam':
