@@ -219,7 +219,7 @@ def SCSAE(input_shape=(150, 150, 1), conv_depth=256, conv_shape=(3, 3),
     output_1 = dec_conv(dec_unpooled)  # output
 
                             ## AUTOENCODER 2 ##
-    enc_conv_layer_2 = Conv2D(conv_depth/2, conv_shape, use_bias=True,
+    enc_conv_layer_2 = Conv2D(int(conv_depth/2), conv_shape, use_bias=True,
                             activation='relu', padding='same',
                             kernel_regularizer=l2(conv_reg))
     enc_conv_2 = enc_conv_layer_2(output_1)
@@ -231,7 +231,7 @@ def SCSAE(input_shape=(150, 150, 1), conv_depth=256, conv_shape=(3, 3),
     output_2 = dec_conv_2(dec_unpooled_2)  # output
 
                             ## AUTOENCODER 3 ##
-    enc_conv_layer_3 = Conv2D(conv_depth/4, conv_shape, use_bias=True,
+    enc_conv_layer_3 = Conv2D(int(conv_depth/4), conv_shape, use_bias=True,
                             activation='relu', padding='same',
                             kernel_regularizer=l2(conv_reg))
     enc_conv_3 = enc_conv_layer_3(output_2)
@@ -243,7 +243,7 @@ def SCSAE(input_shape=(150, 150, 1), conv_depth=256, conv_shape=(3, 3),
     output_3 = dec_conv_3(dec_unpooled_3)  # output
 
                             ## AUTOENCODER 4 ##
-    enc_conv_layer_4 = Conv2D(conv_depth/8, conv_shape, use_bias=True,
+    enc_conv_layer_4 = Conv2D(int(conv_depth/8), conv_shape, use_bias=True,
                             activation='relu', padding='same',
                             kernel_regularizer=l2(conv_reg))
     enc_conv_4 = enc_conv_layer_4(output_3)
