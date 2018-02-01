@@ -21,20 +21,20 @@ contrast = None
 # END GEN VARIABLES #
 
 # MODEL VARIABLES #
-conv_depth = 64
+conv_depth = 256
 conv_shape = (3, 3)
 pool_shape = (3, 3)
 stride = None
-conv_regs = np.power(10, np.random.rand(25)*-4 - 1)
-act_regs = np.power(10, np.random.rand(25)*-6 - 1)
-optimizer = "SGD"
-lr = 0.000001
+conv_reg = 0
+act_reg = 0
+optimizer = "Adam"
+lrs = np.power(10, [-6, -5, -4, -3, -2])
 # END MODEL VARIABLES #
 
 # TRAINING VARIABLES #
-epochs = 50
-cb_path = '/n/denic_lab/Users/nweir/python_packages/western_match/outputs/csae_act_conv_reg_opt_'
-es = False
+epochs = 25
+cb_path = '/n/denic_lab/Users/nweir/python_packages/western_match/outputs/csae_lr_opt_256_adam_'
+es = True
 es_patience = 10
 sbo = True
 # END TRAINING VARIABLES #
@@ -52,11 +52,11 @@ train, val = model_selection.train_test_split(src_ims, test_size=0.2)
 output_df = pd.DataFrame(columns=['model_id', 'conv_reg', 'act_reg',
                                   'history'])
 histories = []
-for i in range(0, 25):
+for lr in lrs:
     current_CSAE = CSAE(input_shape=input_shape, conv_depth=conv_depth,
                         conv_shape=conv_shape, pool_shape=pool_shape,
-                        stride=stride, conv_reg=conv_regs[i],
-                        act_reg=act_regs[i], optimizer=optimizer, lr=lr)
+                        stride=stride, conv_reg=conv_reg,
+                        act_reg=act_reg, optimizer=optimizer, lr=lr)
     current_CSAE.summary()
 
     training_data = df_generator(df=train, batch_size=batch_size,
@@ -64,7 +64,7 @@ for i in range(0, 25):
                                  h_resize=h_resize, v_resize=v_resize,
                                  v_flip=v_flip, h_flip=h_flip, rotate=rotate,
                                  contrast=contrast)
-    val_data = df_generator(df=val, batch_size=len(val),
+    val_data = df_generator(df=val, batch_size=batch_size,
                             patch_shape=input_shape[0:2], h_resize=h_resize,
                             v_resize=v_resize, v_flip=v_flip, h_flip=h_flip,
                             rotate=rotate, contrast=contrast)
@@ -72,11 +72,10 @@ for i in range(0, 25):
         generator=training_data,
         steps_per_epoch=int(len(train['image'])/batch_size), epochs=epochs,
         callbacks=get_standard_callbacks(
-                path=cb_path+str(i), es=es, es_patience=es_patience,
+                path=cb_path+str(lr), es=es, es_patience=es_patience,
                 sbo=sbo
-                ), verbose=2, validation_data=val_data, validation_steps=1)
-    histories.append(fit_model.history.history)
-output_df = pd.DataFrame({'model_number': list(range(0, 25)),
-                          'conv_reg': conv_regs, 'act_reg': act_regs,
-                          'history': histories})
-output_df.to_pickle('/n/denic_lab/Users/nweir/python_packages/western_match/outputs/act_conv_reg_opt.pkl')
+                ), verbose=2, validation_data=val_data, validation_steps=int(len(val.index)/batch_size))
+    histories.append(fit_model.history)
+output_df = pd.DataFrame({'model_number': list(range(0, lrs.size)),
+                          'lr': lrs, 'history': histories})
+output_df.to_pickle('/n/denic_lab/Users/nweir/python_packages/western_match/outputs/conv_256_lr_opt.pkl')
