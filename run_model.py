@@ -28,7 +28,7 @@ stride = None
 conv_reg = 0
 act_reg = 0
 optimizer = "Adam"
-lrs = np.power(10, [-6, -5, -4, -3, -2])
+lrs = np.power(10, np.arange(-6, -1))
 # END MODEL VARIABLES #
 
 # TRAINING VARIABLES #
