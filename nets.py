@@ -200,6 +200,66 @@ def multilayer_CSAE(input_shape=(243, 243, 1), conv_depth=16,
     return model
 
 
+def SCSAE(input_shape=(150, 150, 1), conv_depth=256, conv_shape=(3, 3),
+          pool_shape=(3, 3), stride=None, conv_reg=0, act_reg=0,
+          optimizer='Adam', lr=0.0001):
+    """A stacked convolutional sparse auto-encoder. See CSAE for args."""
+
+                            ## AUTOENCODER 1 ##
+    input_img = Input(shape=input_shape)  # input layer
+    enc_conv_layer = Conv2D(conv_depth, conv_shape, use_bias=True,
+                            activation='relu', padding='same',
+                            kernel_regularizer=l2(conv_reg))  # conv w l2 reg
+    enc_conv = enc_conv_layer(input_img)
+    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
+    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
+    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
+    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                               activation='relu', padding='same')
+    output_1 = dec_conv(dec_unpooled)  # output
+
+                            ## AUTOENCODER 2 ##
+    enc_conv_layer = Conv2D(conv_depth/2, conv_shape, use_bias=True,
+                            activation='relu', padding='same',
+                            kernel_regularizer=l2(conv_reg))(output_1)
+    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
+    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
+    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
+    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                               activation='relu', padding='same')
+    output_2 = dec_conv(dec_unpooled)  # output
+
+                            ## AUTOENCODER 3 ##
+    enc_conv_layer = Conv2D(conv_depth/4, conv_shape, use_bias=True,
+                            activation='relu', padding='same',
+                            kernel_regularizer=l2(conv_reg))(output_2)
+    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
+    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
+    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
+    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                               activation='relu', padding='same')
+    output_3 = dec_conv(dec_unpooled)  # output
+
+                            ## AUTOENCODER 4 ##
+    enc_conv_layer = Conv2D(conv_depth/8, conv_shape, use_bias=True,
+                            activation='relu', padding='same',
+                            kernel_regularizer=l2(conv_reg))(output_3)
+    encoded = MaxPooling2D(pool_shape, strides=stride)(enc_conv)  # enc output
+    enc_reg = ActivityRegularization(l2=act_reg)(encoded)  # sparsifying reg
+    dec_unpooled = UpSampling2D(size=pool_shape)(enc_reg)  # de-pooling
+    dec_conv = Conv2DTranspose(1, conv_shape, use_bias=True,  # deconvolution
+                               activation='relu', padding='same')
+    output_4 = dec_conv(dec_unpooled)  # output
+
+    model = Model(input=input_img, outputs=output_4)
+    if optimizer == 'Adam':
+        myopt = Adam(lr=lr)
+    elif optimizer == 'SGD':
+        myopt = SGD(lr=lr)
+
+    model.compile(optimizer=myopt, loss='mean_squared_error',
+                  metrics=['accuracy'])
+    return model
 
 def get_standard_callbacks(path, es=False, es_patience=10, sbo=True):
     """Prepare callbacks for training.
