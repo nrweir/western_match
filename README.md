@@ -9,7 +9,7 @@ Sample notebooks demonstrating the ability of the pipeline to:
 - __Duplicate\_Detection:__ Compare images of Western blots to a pre-existing library of images (or to other individual images) to identify duplicates.
 
 ### exported_model:
-The Inception V2 object detector, re-trained via Transfer Learning to identify Western blot images. This is the model used to extract Western blots from figures.
+The Inception V2 object detector, re-trained via Transfer Learning to identify Western blot images. This is the model used to extract Western blots from figures. See Western blot extraction in action in [Western_Detection](Notebooks/Western_Detection.ipynb)
 
 ### hashed_westerns:
 The Western blot image library used in [Duplicate_Detection](Notebooks/Duplicate_Detection.ipynb). See the notebook for an explanation of how this was generated.
@@ -19,3 +19,6 @@ K-Means clustering models used to generate groups of related ORB and SIFT featur
 
 ### Other:
 - gcloud_ssd_inception_v2_gel_2.config: Config file for transfer learning with the Inception model. Provided for parameter reference.
+
+## References and useful links:
+- [The TensorFlow Object Detection library](https://github.com/tensorflow/models/tree/master/research/object_detection)
