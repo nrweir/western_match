@@ -16,3 +16,6 @@ The Western blot image library used in [Duplicate_Detection](Notebooks/Duplicate
 
 ### kmeans_models:
 K-Means clustering models used to generate groups of related ORB and SIFT feature "words" for hashing gel images. See [Duplicate_Detection](Notebooks/Duplicate_Detection.ipynb) for details of how this works.
+
+### Other:
+- gcloud_ssd_inception_v2_gel_2.config: Config file for transfer learning with the Inception model. Provided for parameter reference.
