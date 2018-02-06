@@ -8,8 +8,11 @@ Sample notebooks demonstrating the ability of the pipeline to:
 - __Western\_Detection:__ Identify Western blot images (and indeed any gel images) from figures in biomedical research articles using an Inception V2 object detector implemented in TensorFlow.
 - __Duplicate\_Detection:__ Compare images of Western blots to a pre-existing library of images (or to other individual images) to identify duplicates.
 
+### training_data:
+tfrecord-formatted training and evaluation data used to re-train the frozen SSD-Inception V2 object detection model.
+
 ### exported_model:
-The Inception V2 object detector, re-trained via Transfer Learning to identify Western blot images. This is the model used to extract Western blots from figures. See Western blot extraction in action in [Western_Detection](Notebooks/Western_Detection.ipynb)
+The Inception V2 object detector, re-trained via Transfer Learning to identify Western blot images. This is the model used to extract Western blots from figures. See Western blot extraction in action in [Western_Detection](Notebooks/Western_Detection.ipynb).
 
 ### hashed_westerns:
 The Western blot image library used in [Duplicate_Detection](Notebooks/Duplicate_Detection.ipynb). See the notebook for an explanation of how this was generated.
