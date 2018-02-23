@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 
 def normalize_image(image_arr):
+    """Convert images to grayscale and normalize contrast."""
     # normalize image for processing
     if len(image_arr.shape) == 3:
         image_arr = cv2.cvtColor(image_arr, cv2.COLOR_RGB2GRAY)  # to grayscale
@@ -13,6 +14,7 @@ def normalize_image(image_arr):
 
 
 def hash_features(feature_des, kmeans, n_clusters):
+    """Take ORB or SIFT features and generate hash vector using kmeans."""
     feature_hash = np.zeros(n_clusters)
     if feature_des is not None:
         if len(feature_des.shape) == 1:
@@ -24,6 +26,7 @@ def hash_features(feature_des, kmeans, n_clusters):
 
 
 def compare_hashes(test_hash, hash_lib):
+    """Measure similarity using intersection/union operation."""
     test_hash = test_hash > 0
     hash_lib = hash_lib > 0
     similarity = []
